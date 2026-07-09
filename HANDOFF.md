@@ -7,3 +7,9 @@
 - 画像: 既存3点に加え、`hero-vault.png`、`lot-0711-film.png`、`lot-0731-bell.png`、`lot-0804-box.png` をChatGPTで生成して使用。スプライトシート不使用。
 - 謎解きの種: 「四番目のベル」「11月31日」「00:17:26」「03:17:42」。現時点では解答を決めていない。
 - 次にやること: 必要ならLOT 0529以降の個別詳細ページと、謎の最終解答フローを追加する。
+
+## 公開先
+
+- GitHub: https://github.com/ailiferyoya-gif/KagefudaAuction
+- GitHub Pages: https://ailiferyoya-gif.github.io/KagefudaAuction/
+- Pages設定: `main` ブランチ / `/ (root)` / `.nojekyll`
