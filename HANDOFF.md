@@ -13,3 +13,10 @@
 - GitHub: https://github.com/ailiferyoya-gif/KagefudaAuction
 - GitHub Pages: https://ailiferyoya-gif.github.io/KagefudaAuction/
 - Pages設定: `main` ブランチ / `/ (root)` / `.nojekyll`
+
+## 観測者プロトコル
+
+- `observer.js` が閲覧ページ、検索語、ウォッチ状態を端末内の `localStorage` にのみ記録。
+- `observer.html` で個別ID、行動ログ、証拠関係図、段階解放を表示。
+- 条件達成と照合語の復元で `lot-0000.html` が解放される。
+- 隠しロット画像は `assets/lot-0000-reliquary.png`。ChatGPT生成、スプライトシート不使用。
