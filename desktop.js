@@ -50,6 +50,14 @@
         body: "Archive Delivery Service — 宛先を確認できません",
         action: "mailWindow",
         time: "03:18"
+      },
+      {
+        id: "twitter",
+        app: "Twitter",
+        title: "港南の海底さんが返信しました",
+        body: "早瀬さん、午前2時に同じ時計の写真を投稿してましたよ。",
+        action: "twitterWindow",
+        time: "03:18"
       }
     ]
   };

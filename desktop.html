@@ -6,6 +6,7 @@
   <meta name="description" content="ブラウザだけで操作できる架空のWindows風デスクトップ謎解き。">
   <title>KFA-ARCHIVE-07 | 仮想デスクトップ</title>
   <link rel="stylesheet" href="desktop.css?v=20260710b">
+  <link rel="stylesheet" href="twitter.css?v=20260710a">
 </head>
 <body>
   <svg class="svg-defs" aria-hidden="true">
@@ -14,6 +15,13 @@
     <symbol id="i-browser" viewBox="0 0 24 24"><path d="M4.4 15.8c1.9 4.2 7 6 11.1 3.9 4.2-2.1 5.8-7.3 3.3-11.3C16.3 4.3 10.8 3.2 7 6.2c-3.2 2.5-4.2 7.2-1.9 10.6 2.1 3.1 6.3 4 9.5 2.1 2.8-1.7 4-5.2 2.8-8.2-1.2-3-4.4-4.7-7.5-3.9-2.8.7-4.7 3.3-4.6 6.2"/></symbol>
     <symbol id="i-line" viewBox="0 0 24 24"><path d="M21 10.7c0-4.4-4-8-9-8s-9 3.6-9 8c0 3.9 3.2 7.2 7.5 7.9.3.1.7.3.8.7.1.3.1.8.1 1.1l-.2 1.2c-.1.4-.3 1.4 1.2.8 1.4-.6 7.5-4.4 8.4-7.5.2-.6.3-1.3.3-2.2Z"/><path d="M7 9v4M9.2 13V9l2.6 4V9M14 9v4h2.4M17.4 9h-2v4h2"/></symbol>
     <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></symbol>
+    <symbol id="i-twitter" viewBox="0 0 24 24"><path d="M21 6.2c-.7.3-1.4.5-2.1.6.8-.5 1.3-1.2 1.6-2-.7.4-1.5.7-2.3.9A3.6 3.6 0 0 0 12 8.2c0 .3 0 .6.1.8-3-.2-5.7-1.6-7.5-3.8a3.6 3.6 0 0 0 1.1 4.9c-.6 0-1.1-.2-1.6-.4 0 1.8 1.3 3.3 3 3.6-.3.1-.6.1-1 .1l-.7-.1a3.6 3.6 0 0 0 3.4 2.5A7.3 7.3 0 0 1 4.3 17H3.4A10.2 10.2 0 0 0 9 18.7c6.7 0 10.4-5.6 10.4-10.4v-.5c.7-.4 1.2-1 1.6-1.6Z"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM9.5 21h5"/></symbol>
+    <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4V3Z"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></symbol>
+    <symbol id="i-reply" viewBox="0 0 24 24"><path d="M20 16.5a8.5 8.5 0 1 0-3.6 3.1L21 21l-1-4.5Z"/></symbol>
+    <symbol id="i-repost" viewBox="0 0 24 24"><path d="m7 7 3-3 3 3M10 4v12a3 3 0 0 0 3 3h5M17 17l3 3-3 3M20 20V8a3 3 0 0 0-3-3h-5"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 5.8c-2.1-2.1-5.5-2.1-7.6 0L12 7l-1.2-1.2a5.4 5.4 0 0 0-7.6 7.6L12 22l8.8-8.6a5.4 5.4 0 0 0 0-7.6Z"/></symbol>
     <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
     <symbol id="i-wave" viewBox="0 0 24 24"><path d="M3 12h2l2-6 3 12 3-16 3 20 2-10h3"/></symbol>
     <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M8 14h3M14 14h3M8 18h3M14 18h3"/></symbol>
@@ -51,6 +59,7 @@
       <button class="desktop-icon" data-open="auctionDirect"><span class="app-tile browser-tile"><svg><use href="#i-browser"/></svg></span><span>影札オークション</span></button>
       <button class="desktop-icon" data-open="lineWindow"><span class="app-tile line-tile"><svg><use href="#i-line"/></svg></span><span>LINE</span><b class="desktop-badge" data-line-unread>2</b></button>
       <button class="desktop-icon" data-open="mailWindow"><span class="app-tile mail-tile"><svg><use href="#i-mail"/></svg></span><span>Mail</span><b class="desktop-badge" data-mail-unread>3</b></button>
+      <button class="desktop-icon" data-open="twitterWindow"><span class="app-tile twitter-tile"><svg><use href="#i-twitter"/></svg></span><span>Twitter</span><b class="desktop-badge" data-twitter-unread>2</b></button>
       <button class="desktop-icon" data-open="toolsDirect"><span class="app-tile tools-tile"><svg><use href="#i-grid"/></svg></span><span>謎解きツール</span></button>
       <button class="desktop-icon" data-open="recorderWindow"><span class="app-tile puzzle-tile recorder-tile"><svg><use href="#i-wave"/></svg></span><span>音声レコーダー</span></button>
       <button class="desktop-icon" data-open="calendarWindow"><span class="app-tile puzzle-tile calendar-tile"><svg><use href="#i-calendar"/></svg></span><span>カレンダー</span></button>
@@ -72,6 +81,36 @@
       </header>
       <div class="browser-toolbar"><button data-browser-back aria-label="戻る"><svg><use href="#i-back"/></svg></button><button data-browser-forward aria-label="進む"><svg><use href="#i-chevron"/></svg></button><button data-browser-reload aria-label="再読み込み"><svg><use href="#i-refresh"/></svg></button><div class="browser-address"><span class="browser-security" title="この架空端末内のローカルページ"><svg><use href="#i-shield"/></svg></span><input value="kagefuda.local/search.html" aria-label="アドレス" readonly></div><button data-browser-home aria-label="ホーム"><svg><use href="#i-home"/></svg></button></div>
       <iframe class="browser-frame" id="browserFrame" src="search.html" title="Google 検索"></iframe>
+    </section>
+
+    <section class="os-window twitter-window" id="twitterWindow" data-app="twitter" aria-labelledby="twitterTitle" hidden>
+      <header class="window-titlebar" data-drag-handle><div class="window-app-icon twitter-tile"><svg><use href="#i-twitter"/></svg></div><span id="twitterTitle">Twitter | KFA local archive</span><small>架空・ローカル記録 / 外部通信なし</small><div class="window-controls"><button data-minimize aria-label="最小化">─</button><button data-maximize aria-label="最大化"><svg><use href="#i-max"/></svg></button><button class="close" data-close aria-label="閉じる">×</button></div></header>
+      <div class="twitter-shell">
+        <nav class="twitter-nav" aria-label="Twitterメニュー">
+          <div class="twitter-brand" aria-hidden="true"><svg><use href="#i-twitter"/></svg></div>
+          <button class="active" data-twitter-view="home"><svg><use href="#i-home"/></svg><span>ホーム</span></button>
+          <button data-twitter-view="explore"><svg><use href="#i-search"/></svg><span>話題を検索</span></button>
+          <button data-twitter-view="notifications"><svg><use href="#i-bell"/></svg><span>通知</span><b data-twitter-unread>2</b></button>
+          <button data-twitter-view="bookmarks"><svg><use href="#i-bookmark"/></svg><span>ブックマーク</span></button>
+          <button data-twitter-view="profile"><svg><use href="#i-user"/></svg><span>プロフィール</span></button>
+          <button class="twitter-compose-open" data-twitter-compose-open><span>投稿する</span><b>＋</b></button>
+          <div class="twitter-account"><span class="twitter-avatar avatar-hayase">早</span><span><strong>早瀬 真琴</strong><small>@hayase_m</small></span></div>
+        </nav>
+        <main class="twitter-main">
+          <header class="twitter-view-head"><div><button class="twitter-mobile-back" data-twitter-home aria-label="ホームへ戻る"><svg><use href="#i-back"/></svg></button><strong data-twitter-title>ホーム</strong></div><button data-twitter-refresh aria-label="タイムラインを更新"><svg><use href="#i-refresh"/></svg></button></header>
+          <div class="twitter-tabs" data-twitter-tabs><button class="active" data-twitter-tab="recommended">おすすめ</button><button data-twitter-tab="following">フォロー中</button></div>
+          <section class="twitter-feed" data-twitter-feed aria-live="polite" tabindex="-1"></section>
+        </main>
+        <aside class="twitter-right">
+          <label class="twitter-search"><svg><use href="#i-search"/></svg><input data-twitter-search type="search" placeholder="キーワード検索" aria-label="Twitterを検索"></label>
+          <section class="twitter-side-card"><header><strong>いまどうしてる？</strong></header><div data-twitter-trends></div></section>
+          <section class="twitter-side-card twitter-follow-card"><header><strong>おすすめユーザー</strong></header><div data-twitter-suggestions></div></section>
+          <footer><span>このアプリは架空のローカル記録です。</span><button data-twitter-reset>データを初期化</button></footer>
+        </aside>
+      </div>
+      <section class="twitter-compose-dialog" data-twitter-compose hidden role="dialog" aria-modal="true" aria-labelledby="twitterComposeTitle">
+        <div class="twitter-compose-card"><header><button data-twitter-compose-close aria-label="投稿画面を閉じる">×</button><strong id="twitterComposeTitle">新しい投稿</strong><button class="twitter-post-submit" data-twitter-post-submit disabled>投稿する</button></header><div><span class="twitter-avatar avatar-hayase">早</span><textarea data-twitter-compose-text maxlength="280" placeholder="いまどうしてる？" aria-label="投稿内容"></textarea></div><footer><span>外部には送信されません</span><b data-twitter-count>0 / 280</b></footer></div>
+      </section>
     </section>
 
     <section class="os-window line-window" id="lineWindow" data-app="line" aria-labelledby="lineTitle" hidden>
@@ -118,15 +157,16 @@
       <header class="window-titlebar" data-drag-handle><div class="window-app-icon note-tile"><svg><use href="#i-note"/></svg></div><span id="notepadTitle" data-notepad-title>メモ帳</span><div class="window-controls"><button data-minimize aria-label="最小化">─</button><button data-maximize aria-label="最大化"><svg><use href="#i-max"/></svg></button><button class="close" data-close aria-label="閉じる">×</button></div></header><div class="notepad-menu">ファイル　編集　表示</div><textarea data-notepad-content spellcheck="false" aria-label="文書内容"></textarea><footer><span>Windows (CRLF)</span><span>UTF-8</span></footer>
     </section>
 
-    <div class="start-menu" id="startMenu" hidden><header><strong>ピン留め済み</strong><button>すべて　›</button></header><div class="start-apps"><button data-open="searchDirect"><span class="app-tile google-tile"><span class="google-mark" aria-hidden="true">G</span></span>Google</button><button data-open="browserWindow"><span class="app-tile browser-tile"><svg><use href="#i-browser"/></svg></span>Edge</button><button data-open="lineWindow"><span class="app-tile line-tile"><svg><use href="#i-line"/></svg></span>LINE</button><button data-open="mailWindow"><span class="app-tile mail-tile"><svg><use href="#i-mail"/></svg></span>Mail</button><button data-open="toolsDirect"><span class="app-tile tools-tile"><svg><use href="#i-grid"/></svg></span>謎解きツール</button><button data-open="explorerWindow"><span class="app-tile folder-tile"><svg><use href="#i-folder"/></svg></span>エクスプローラー</button><button data-open="observerDirect"><span class="app-tile observer-tile">13</span>観測記録</button><button data-open="recycleWindow"><span class="app-tile trash-tile"><svg><use href="#i-trash"/></svg></span>ごみ箱</button></div><section><strong>おすすめ</strong><button class="recommendation" data-open="toolsDirect"><span class="app-tile tools-tile"><svg><use href="#i-grid"/></svg></span><span>アプリ ライブラリ<small>謎解き用の記録ツール</small></span></button></section><footer><span class="user-avatar">早</span><b>早瀬 真琴</b><button data-power aria-label="電源">⏻</button></footer></div>
+    <div class="start-menu" id="startMenu" hidden><header><strong>ピン留め済み</strong><button>すべて　›</button></header><div class="start-apps"><button data-open="searchDirect"><span class="app-tile google-tile"><span class="google-mark" aria-hidden="true">G</span></span>Google</button><button data-open="browserWindow"><span class="app-tile browser-tile"><svg><use href="#i-browser"/></svg></span>Edge</button><button data-open="lineWindow"><span class="app-tile line-tile"><svg><use href="#i-line"/></svg></span>LINE</button><button data-open="mailWindow"><span class="app-tile mail-tile"><svg><use href="#i-mail"/></svg></span>Mail</button><button data-open="twitterWindow"><span class="app-tile twitter-tile"><svg><use href="#i-twitter"/></svg></span>Twitter</button><button data-open="toolsDirect"><span class="app-tile tools-tile"><svg><use href="#i-grid"/></svg></span>謎解きツール</button><button data-open="explorerWindow"><span class="app-tile folder-tile"><svg><use href="#i-folder"/></svg></span>エクスプローラー</button><button data-open="observerDirect"><span class="app-tile observer-tile">13</span>観測記録</button><button data-open="recycleWindow"><span class="app-tile trash-tile"><svg><use href="#i-trash"/></svg></span>ごみ箱</button></div><section><strong>おすすめ</strong><button class="recommendation" data-open="twitterWindow"><span class="app-tile twitter-tile"><svg><use href="#i-twitter"/></svg></span><span>Twitter ローカル記録<small>第七码頭についての投稿 2件</small></span></button></section><footer><span class="user-avatar">早</span><b>早瀬 真琴</b><button data-power aria-label="電源">⏻</button></footer></div>
 
     <aside class="notification-panel" id="notificationPanel" hidden><header><strong>通知</strong><button data-clear-notifications>すべてクリア</button></header><div data-notifications></div><section class="calendar-card"><div data-calendar-date></div><strong data-calendar-day></strong></section></aside>
     <div class="desktop-toast" data-desktop-toast role="status" aria-live="polite"></div>
   </main>
 
-  <footer class="taskbar"><div class="taskbar-center"><button class="task-button" id="startButton" aria-label="スタート"><svg><use href="#i-start"/></svg></button><button class="task-button" data-open="browserWindow" data-task="browserWindow" aria-label="Edge"><svg><use href="#i-browser"/></svg></button><button class="task-button line-task" data-open="lineWindow" data-task="lineWindow" aria-label="LINE"><svg><use href="#i-line"/></svg><b data-line-unread>2</b></button><button class="task-button mail-task" data-open="mailWindow" data-task="mailWindow" aria-label="Mail"><svg><use href="#i-mail"/></svg><b data-mail-unread>3</b></button><button class="task-button" data-open="explorerWindow" data-task="explorerWindow" aria-label="エクスプローラー"><svg><use href="#i-folder"/></svg></button></div><button class="system-tray" id="trayButton" aria-label="通知とカレンダー"><svg><use href="#i-wifi"/></svg><svg><use href="#i-volume"/></svg><span><b data-task-time>03:16</b><small data-task-date>2026/07/10</small></span></button></footer>
+  <footer class="taskbar"><div class="taskbar-center"><button class="task-button" id="startButton" aria-label="スタート"><svg><use href="#i-start"/></svg></button><button class="task-button" data-open="browserWindow" data-task="browserWindow" aria-label="Edge"><svg><use href="#i-browser"/></svg></button><button class="task-button line-task" data-open="lineWindow" data-task="lineWindow" aria-label="LINE"><svg><use href="#i-line"/></svg><b data-line-unread>2</b></button><button class="task-button mail-task" data-open="mailWindow" data-task="mailWindow" aria-label="Mail"><svg><use href="#i-mail"/></svg><b data-mail-unread>3</b></button><button class="task-button twitter-task" data-open="twitterWindow" data-task="twitterWindow" aria-label="Twitter"><svg><use href="#i-twitter"/></svg><b data-twitter-unread>2</b></button><button class="task-button" data-open="explorerWindow" data-task="explorerWindow" aria-label="エクスプローラー"><svg><use href="#i-folder"/></svg></button></div><button class="system-tray" id="trayButton" aria-label="通知とカレンダー"><svg><use href="#i-wifi"/></svg><svg><use href="#i-volume"/></svg><span><b data-task-time>03:16</b><small data-task-date>2026/07/10</small></span></button></footer>
 
   <audio id="archiveVoice" preload="auto" src="assets/call-031711310417.wav"></audio>
-  <script src="desktop.js?v=20260710b"></script>
+  <script src="twitter.js?v=20260710a"></script>
+  <script src="desktop.js?v=20260710c"></script>
 </body>
 </html>
