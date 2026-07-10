@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="影札アーカイブ端末内を検索するローカル検索ページ">
+  <title>Google 検索 — KFA ローカル</title>
+  <link rel="stylesheet" href="search.css">
+</head>
+<body data-view="home">
+  <a class="skip-link" href="#searchMain">検索へ移動</a>
+
+  <header class="home-nav" aria-label="Google サービス">
+    <nav class="home-nav__links" aria-label="サービスメニュー">
+      <button class="text-link" type="button" data-local-action="gmail">Gmail</button>
+      <button class="text-link" type="button" data-local-action="images">画像</button>
+      <button class="icon-button apps-button" type="button" aria-label="Google アプリ" aria-haspopup="menu" aria-expanded="false" aria-controls="appsMenu" data-apps-button>
+        <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="5" cy="5" r="1.7"/><circle cx="12" cy="5" r="1.7"/><circle cx="19" cy="5" r="1.7"/><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/><circle cx="5" cy="19" r="1.7"/><circle cx="12" cy="19" r="1.7"/><circle cx="19" cy="19" r="1.7"/></svg>
+      </button>
+      <button class="profile-button" type="button" aria-label="ローカルプロフィール K" data-local-action="profile">K</button>
+    </nav>
+  </header>
+
+  <aside class="apps-menu" id="appsMenu" role="menu" aria-label="ローカルアプリ" hidden>
+    <p class="apps-menu__eyebrow">KFA ローカルアプリ</p>
+    <div class="apps-grid">
+      <a class="app-tile" href="index.html" role="menuitem">
+        <span class="app-icon app-icon--auction" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 8.5h16M7 4h10l2 4.5H5L7 4Zm-1 4.5V20h12V8.5M9 12h6v4H9z"/></svg></span>
+        <span>影札</span>
+      </a>
+      <a class="app-tile" href="archive.html" role="menuitem">
+        <span class="app-icon app-icon--archive" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 7h14v13H5zM4 4h16v4H4zM9 11h6"/></svg></span>
+        <span>資料庫</span>
+      </a>
+      <a class="app-tile" href="observer.html" role="menuitem">
+        <span class="app-icon app-icon--observe" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="3"/></svg></span>
+        <span>観測記録</span>
+      </a>
+      <button class="app-tile" type="button" role="menuitem" data-open-line>
+        <span class="app-icon app-icon--line" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 10.6c0 4-3.6 7.2-8 7.2-.7 0-1.3-.1-2-.2L6 20l.8-3.5C5.1 15.2 4 13.1 4 10.6 4 6.6 7.6 4 12 4s8 2.6 8 6.6Z"/></svg></span>
+        <span>LINE</span>
+      </button>
+    </div>
+    <p class="apps-menu__note">この端末内のアプリだけを開きます</p>
+  </aside>
+
+  <main id="searchMain">
+    <section class="home-view" aria-labelledby="homeLogo">
+      <div class="home-center">
+        <h1 class="google-logo google-logo--large" id="homeLogo" aria-label="Google">
+          <span class="logo-blue">G</span><span class="logo-red">o</span><span class="logo-yellow">o</span><span class="logo-blue">g</span><span class="logo-green">l</span><span class="logo-red">e</span>
+        </h1>
+
+        <form class="search-form search-form--home" role="search" data-search-form autocomplete="off">
+          <div class="search-shell" data-search-shell>
+            <svg class="search-leading-icon" aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.7"/><path d="m16 16 4.2 4.2"/></svg>
+            <label class="sr-only" for="homeSearch">KFA端末内を検索</label>
+            <input id="homeSearch" class="search-input" type="search" name="q" enterkeyhint="search" role="combobox" aria-autocomplete="list" aria-controls="homeSuggestions" aria-expanded="false" aria-activedescendant="" spellcheck="false" placeholder="">
+            <div class="search-actions">
+              <button class="input-action" type="button" aria-label="音声検索（ローカルでは利用できません）" data-local-action="voice">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6.5 11.5a5.5 5.5 0 0 0 11 0M12 17v4M9 21h6"/></svg>
+              </button>
+              <button class="input-action" type="button" aria-label="画像で検索（ローカルでは利用できません）" data-local-action="lens">
+                <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M8 4H6a2 2 0 0 0-2 2v2M16 4h2a2 2 0 0 1 2 2v2M4 16v2a2 2 0 0 0 2 2h2M20 16v2a2 2 0 0 1-2 2h-2"/><circle cx="12" cy="12" r="3.5"/></svg>
+              </button>
+            </div>
+            <ul class="suggestions" id="homeSuggestions" role="listbox" aria-label="検索候補" hidden></ul>
+          </div>
+          <div class="home-buttons">
+            <button class="google-button" type="submit">Google 検索</button>
+            <button class="google-button" type="button" data-lucky>I'm Feeling Lucky</button>
+          </div>
+        </form>
+
+        <p class="local-caption"><span aria-hidden="true"></span>KFA-ARCHIVE-07 の保存領域のみを検索します</p>
+      </div>
+    </section>
+
+    <section class="results-view" aria-label="検索結果" hidden>
+      <header class="results-header">
+        <div class="results-header__top">
+          <a class="google-logo google-logo--compact" href="search.html" aria-label="Google 検索ホームへ戻る">
+            <span class="logo-blue">G</span><span class="logo-red">o</span><span class="logo-yellow">o</span><span class="logo-blue">g</span><span class="logo-green">l</span><span class="logo-red">e</span>
+          </a>
+          <form class="search-form search-form--results" role="search" data-search-form autocomplete="off">
+            <div class="search-shell" data-search-shell>
+              <label class="sr-only" for="resultSearch">KFA端末内を検索</label>
+              <input id="resultSearch" class="search-input" type="search" name="q" enterkeyhint="search" role="combobox" aria-autocomplete="list" aria-controls="resultSuggestions" aria-expanded="false" aria-activedescendant="" spellcheck="false">
+              <div class="search-actions">
+                <button class="clear-query" type="button" aria-label="検索語句を消去" data-clear-query hidden>
+                  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+                </button>
+                <span class="results-divider" aria-hidden="true"></span>
+                <button class="input-action" type="button" aria-label="音声検索（ローカルでは利用できません）" data-local-action="voice">
+                  <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6.5 11.5a5.5 5.5 0 0 0 11 0M12 17v4M9 21h6"/></svg>
+                </button>
+                <button class="input-action" type="submit" aria-label="検索">
+                  <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.7"/><path d="m16 16 4.2 4.2"/></svg>
+                </button>
+              </div>
+              <ul class="suggestions" id="resultSuggestions" role="listbox" aria-label="検索候補" hidden></ul>
+            </div>
+          </form>
+          <div class="results-account">
+            <button class="icon-button apps-button" type="button" aria-label="Google アプリ" aria-haspopup="menu" aria-expanded="false" aria-controls="appsMenu" data-apps-button>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="5" cy="5" r="1.7"/><circle cx="12" cy="5" r="1.7"/><circle cx="19" cy="5" r="1.7"/><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/><circle cx="5" cy="19" r="1.7"/><circle cx="12" cy="19" r="1.7"/><circle cx="19" cy="19" r="1.7"/></svg>
+            </button>
+            <button class="profile-button" type="button" aria-label="ローカルプロフィール K" data-local-action="profile">K</button>
+          </div>
+        </div>
+        <nav class="search-tabs" aria-label="検索の種類">
+          <button class="search-tab is-active" type="button" aria-current="page" data-search-tab="all">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 4.5 4.5"/></svg>すべて
+          </button>
+          <button class="search-tab" type="button" data-local-action="images">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m5 17 4.5-4 3.2 3 2.4-2 3.9 3.6"/></svg>画像
+          </button>
+          <button class="search-tab" type="button" data-local-action="news">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 5h13v14H4zM17 8h3v9a2 2 0 0 1-2 2h-1M7 9h7M7 12h7M7 15h4"/></svg>ニュース
+          </button>
+          <button class="search-tab" type="button" data-local-action="maps">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 21s6-5.1 6-11a6 6 0 1 0-12 0c0 5.9 6 11 6 11Z"/><circle cx="12" cy="10" r="2"/></svg>地図
+          </button>
+          <button class="search-tab" type="button" data-local-action="shopping">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m4 7 2-3h12l2 3-1 13H5L4 7Z"/><path d="M9 9a3 3 0 0 0 6 0"/></svg>ショッピング
+          </button>
+          <button class="tools-button" type="button" data-tools>ツール</button>
+        </nav>
+        <div class="tool-strip" data-tool-strip hidden>
+          <button type="button" data-local-action="time-filter">期間指定なし</button>
+          <button type="button" data-local-action="verbatim">すべての結果</button>
+          <span>インデックス: KFA-ARCHIVE-07</span>
+        </div>
+      </header>
+
+      <div class="results-layout">
+        <div class="results-column">
+          <p class="results-stats" data-results-stats aria-live="polite"></p>
+          <div class="result-list" data-result-list></div>
+        </div>
+        <aside class="knowledge-panel" data-knowledge-panel aria-label="検索対象の概要" hidden></aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="google-footer home-footer">
+    <div class="footer-country">日本</div>
+    <div class="footer-links">
+      <nav aria-label="Googleについて">
+        <button type="button" data-local-action="about-search">Googleについて</button>
+        <button type="button" data-local-action="ads">広告</button>
+        <button type="button" data-local-action="business">ビジネス</button>
+        <button type="button" data-local-action="how-search">検索の仕組み</button>
+      </nav>
+      <nav aria-label="検索設定">
+        <button type="button" data-local-action="privacy">プライバシー</button>
+        <button type="button" data-local-action="terms">規約</button>
+        <button type="button" data-local-action="settings">設定</button>
+      </nav>
+    </div>
+  </footer>
+
+  <footer class="results-footer" hidden>
+    <div><strong>日本</strong><span class="location-dot" aria-hidden="true"></span><span>第七码頭保管区 — この端末の推定位置</span></div>
+    <nav aria-label="結果ページのフッター">
+      <button type="button" data-local-action="help">ヘルプ</button>
+      <button type="button" data-local-action="feedback">フィードバックを送信</button>
+      <button type="button" data-local-action="privacy">プライバシー</button>
+      <button type="button" data-local-action="terms">規約</button>
+    </nav>
+  </footer>
+
+  <div class="local-toast" role="status" aria-live="polite" aria-atomic="true" data-toast hidden></div>
+  <script src="search.js"></script>
+</body>
+</html>

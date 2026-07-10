@@ -11,6 +11,15 @@
 - 保存: `kagefuda-desktop-v1`（端末状態）と既存の観測者プロトコル用キーを同一オリジンの `localStorage` で管理。
 - 安全境界: 110・119を含む実電話網には接続しない。全演出はHTML/CSS/JavaScriptと同梱音声だけで完結。
 
+## Google風ローカル検索（2026-07-10追加）
+
+- 実装: `search.html` / `search.css` / `search.js`。仮想EdgeのホームおよびデスクトップのGoogleアイコンから開く。
+- 操作: 検索候補、キーボード選択、最近の検索、結果タブ、該当なし状態、I'm Feeling Lucky相当の導線を実装。
+- 索引: 影札トップ、開催中ロット、LOT 0417、来歴、Private Sale、観測記録など同一サイト内のページだけを検索する。
+- ARG連携: 「早瀬」「11月31日」「03:17」「第七码頭」などで通常結果に混ざる不穏な記録が変化する。完全な電話番号は検索だけでは露出しない。
+- 安全境界: 外部Google、Gmail、画像検索、音声検索、カメラには接続しない。マイク・カメラ権限も要求しない。
+- 保存: 最近の検索のみ `kagefuda-search-v1` として同一ブラウザ内に保存する。
+
 - 生成済み画像: `assets/lot-0417-recorder.png`（架空の水損カセットレコーダー）
 - 実装: UI/UX Pro MaxのSwiss Modernism 2.0、Editorial Grid、Bento Grid指針で再調整。`private-sale.html`を追加した7ページ構成。
 - UI強化: ホーム検索を主CTA化、マーケット指標レール、非対称Private Sale、カタログ表示切替、モバイル4項目ドックとボトムシート、短いページ遷移を追加。

@@ -258,6 +258,14 @@
   }
 
   function openWindow(id) {
+    if (id === "searchDirect") {
+      navigateBrowser("search.html");
+      return;
+    }
+    if (id === "auctionDirect") {
+      navigateBrowser("index.html");
+      return;
+    }
     if (id === "observerDirect") {
       navigateBrowser("observer.html");
       return;
@@ -274,6 +282,7 @@
 
   function closeWindow(win) {
     if (!win) return;
+    if (win.id === "lineWindow" && currentCall) endCall();
     win.hidden = true;
     win.classList.remove("is-focused", "is-minimized");
     updateTaskbar();
@@ -455,6 +464,7 @@
   // --- Browser -----------------------------------------------------------
   const browserFrame = qs("#browserFrame");
   const browserAddress = qs(".browser-address input");
+  const browserTitle = qs("#browserTitle");
 
   function normalizeRoute(route) {
     const value = String(route || "index.html").replace(/^\/+/, "");
@@ -470,7 +480,7 @@
     if (browserAddress) browserAddress.value = `kagefuda.local/${safeRoute}`;
   }
 
-  qs("[data-browser-home]")?.addEventListener("click", () => navigateBrowser("index.html"));
+  qs("[data-browser-home]")?.addEventListener("click", () => navigateBrowser("search.html"));
   qs("[data-browser-reload]")?.addEventListener("click", () => {
     try { browserFrame?.contentWindow.location.reload(); }
     catch (_error) { if (browserFrame) browserFrame.src = browserFrame.src; }
@@ -486,8 +496,36 @@
       const path = browserFrame.contentWindow.location.pathname.split("/").pop() || "index.html";
       const suffix = `${browserFrame.contentWindow.location.search}${browserFrame.contentWindow.location.hash}`;
       if (browserAddress) browserAddress.value = `kagefuda.local/${path}${suffix}`;
+      const pageTitle = browserFrame.contentDocument?.title?.trim() || path;
+      if (browserTitle) browserTitle.textContent = `Microsoft Edge — ${pageTitle}`;
+      browserFrame.title = pageTitle;
     } catch (_error) {
       if (browserAddress) browserAddress.value = "kagefuda.local/保護されたページ";
+      if (browserTitle) browserTitle.textContent = "Microsoft Edge — 保護されたページ";
+    }
+  });
+
+  window.addEventListener("message", (event) => {
+    if (event.origin !== window.location.origin) return;
+    if (event.source !== browserFrame?.contentWindow) return;
+    const payload = event.data;
+    if (!payload || payload.type !== "kfa-desktop" || typeof payload.action !== "string") return;
+    if (payload.action === "sync-browser" && event.source === browserFrame?.contentWindow) {
+      const safePath = normalizeRoute(payload.path);
+      if (!safePath.startsWith("search.html")) return;
+      const safeTitle = String(payload.title || "Google 検索").slice(0, 120);
+      if (browserAddress) browserAddress.value = `kagefuda.local/${safePath}`;
+      if (browserTitle) browserTitle.textContent = `Microsoft Edge — ${safeTitle}`;
+      browserFrame.title = safeTitle;
+      return;
+    }
+    const actions = {
+      "open-line": () => openWindow("lineWindow"),
+      "open-auction": () => navigateBrowser("index.html"),
+      "open-observer": () => navigateBrowser("observer.html")
+    };
+    if (Object.hasOwn(actions, payload.action) && typeof actions[payload.action] === "function") {
+      actions[payload.action]();
     }
   });
 
@@ -907,12 +945,19 @@
     if (callTimer) callTimer.textContent = "00:00";
     if (callTranscript) {
       callTranscript.hidden = true;
-      callTranscript.textContent = transcript.join("\n");
+      callTranscript.textContent = "";
     }
     if (transcriptToggle) {
+      transcriptToggle.hidden = true;
       transcriptToggle.textContent = "文字起こしを表示";
       transcriptToggle.setAttribute("aria-expanded", "false");
     }
+    if (muteButton) {
+      muteButton.setAttribute("aria-pressed", "false");
+      const muteLabel = qs("span", muteButton);
+      if (muteLabel) muteLabel.textContent = "ミュート";
+    }
+    window.setTimeout(() => qs("[data-hangup]")?.focus(), 40);
   }
 
   function addCallHistory(number, outcome, duration = "00:00") {
@@ -980,6 +1025,8 @@
     callOverlay?.classList.add("connected");
     if (callName) callName.textContent = "アーカイブ 07";
     if (callStatus) callStatus.textContent = "接続済み — 保存音声を再生中";
+    if (callTranscript) callTranscript.textContent = transcript.join("\n");
+    if (transcriptToggle) transcriptToggle.hidden = false;
     startTimer();
     if (!archiveVoice) {
       if (callStatus) callStatus.textContent = "音声ファイルを読み込めませんでした";
@@ -1060,6 +1107,7 @@
     if (!wasEnded) addCallHistory(number, wasConnected ? "通話終了" : "応答なし", duration);
     currentCall = null;
     if (closeOverlay && callOverlay) callOverlay.hidden = true;
+    if (closeOverlay) window.setTimeout(() => qs("[data-dial-call]")?.focus(), 30);
   }
 
   function beginCall() {
