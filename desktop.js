@@ -16,6 +16,16 @@
     hintLevel: 0,
     recentCalls: [],
     notes: {},
+    mail: {
+      activeFolder: "inbox",
+      activeMailId: "archive-delivery",
+      read: {},
+      starred: {},
+      archived: {},
+      trashed: {},
+      drafts: [],
+      sent: []
+    },
     notifications: [
       {
         id: "handoff",
@@ -32,6 +42,14 @@
         body: "四回鳴るまで、切らないで。",
         action: "lineWindow",
         time: "03:17"
+      },
+      {
+        id: "mail",
+        app: "Mail",
+        title: "復元された未読メールがあります",
+        body: "Archive Delivery Service — 宛先を確認できません",
+        action: "mailWindow",
+        time: "03:18"
       }
     ]
   };
@@ -51,6 +69,16 @@
         customMessages: { ...fallback.customMessages, ...(saved.customMessages || {}) },
         unread: { ...fallback.unread, ...(saved.unread || {}) },
         notes: { ...fallback.notes, ...(saved.notes || {}) },
+        mail: {
+          ...fallback.mail,
+          ...(saved.mail || {}),
+          read: { ...fallback.mail.read, ...(saved.mail?.read || {}) },
+          starred: { ...fallback.mail.starred, ...(saved.mail?.starred || {}) },
+          archived: { ...fallback.mail.archived, ...(saved.mail?.archived || {}) },
+          trashed: { ...fallback.mail.trashed, ...(saved.mail?.trashed || {}) },
+          drafts: Array.isArray(saved.mail?.drafts) ? saved.mail.drafts.slice(0, 20) : [],
+          sent: Array.isArray(saved.mail?.sent) ? saved.mail.sent.slice(0, 20) : []
+        },
         notifications: Array.isArray(saved.notifications) ? saved.notifications : fallback.notifications,
         recentCalls: Array.isArray(saved.recentCalls) ? saved.recentCalls.slice(0, 8) : []
       };
@@ -278,6 +306,10 @@
     focusWindow(win);
     closeFlyouts();
     if (id === "lineWindow") window.setTimeout(() => qs("[data-message-input]")?.focus(), 80);
+    if (id === "mailWindow") {
+      renderMail();
+      window.setTimeout(() => qs("[data-mail-search]")?.focus(), 80);
+    }
   }
 
   function closeWindow(win) {
@@ -526,6 +558,237 @@
     };
     if (Object.hasOwn(actions, payload.action) && typeof actions[payload.action] === "function") {
       actions[payload.action]();
+    }
+  });
+
+  // --- Mail --------------------------------------------------------------
+  const mailWindow = qs("#mailWindow");
+  const mailList = qs("[data-mail-list]");
+  const mailReader = qs("[data-mail-reader]");
+  const mailSearch = qs("[data-mail-search]");
+  const mailCompose = qs("[data-mail-compose]");
+  const mailTo = qs("[data-mail-to]");
+  const mailSubject = qs("[data-mail-subject]");
+  const mailBody = qs("[data-mail-body]");
+
+  const mailMessages = [
+    { id: "archive-delivery", folder: "inbox", from: "Archive Delivery Service", address: "delivery@archive-07.local", initials: "A", subject: "復元済み: 宛先のないメール 1通", preview: "配信経路を逆走して届きました。送信日時は受信日時より後です。", body: "早瀬 真琴 様\n\n配信不能として処理されたメッセージを、ローカル配送キューから復元しました。\n\n宛先欄は空欄です。送信者は存在しないドメインを経由しています。添付ファイルはありません。\n\nただし本文末尾には、受信者側でしか記録できない時刻が残っています。\n\n03:17 より前に、返信しないでください。\n\n— Archive Delivery Service", time: "03:18", unread: true, tag: "復元" },
+    { id: "hayase-unsent", folder: "inbox", from: "早瀬 真琴", address: "hayase@kfa.local", initials: "早", subject: "Re: 夜間保管庫の照合について", preview: "メールなら記録が残ると思った。でも、送った覚えのない返信が…", body: "管理室各位\n\n第七码頭の回収品について、台帳と公開目録の照合をお願いします。\n\nメールなら記録が残ると思いました。ですが、下書きに残した文章の続きが、私の知らない文面に変わっています。\n\n『名前を確認しないで』\n\nこの一文だけは、消しても戻ります。\n\n早瀬", time: "03:16", unread: true, tag: "重要" },
+    { id: "mailer-daemon", folder: "inbox", from: "MAILER-DAEMON", address: "postmaster@kfa.local", initials: "!", subject: "配信不能レポート: 0317-1131-0417", preview: "このアドレスはローカル端末の連絡先にありません。", body: "This is the mail system at KFA-ARCHIVE-07.\n\n送信先 0317-1131-0417 は、通常のメールアドレスとして解決できませんでした。\n\n理由: 宛先は電話帳にも配送先一覧にも存在しません。\n\n注記: 同じ識別子が、削除済み通話記録の発信先として検出されています。\n\nこの通知は自動生成されました。返信しないでください。", time: "03:14", unread: true, tag: "配信不能" },
+    { id: "security-log", folder: "inbox", from: "KFA Security", address: "security@kfa.local", initials: "K", subject: "夜間ログの確認依頼", preview: "03:17 の認証記録に、退室時刻だけが残っています。", body: "夜間担当者様\n\n第七码頭保管区の入退室ログに不整合が見つかりました。\n\n03:17 に記録された認証は、入室ではなく退室としてのみ存在します。\n\n入室者の氏名は空欄です。\n\n翌朝までに、観測記録と照合してください。", time: "昨日", unread: false, tag: "保安" }
+  ];
+
+  const mailFolderNames = { inbox: "受信トレイ", starred: "スター付き", sent: "送信済み", drafts: "下書き", archive: "アーカイブ", trash: "ごみ箱" };
+
+  function currentMailItems() {
+    const drafts = state.mail.drafts.map((item) => ({ ...item, folder: "drafts", draft: true, unread: false }));
+    const sent = state.mail.sent.map((item) => ({ ...item, folder: "sent", sent: true, unread: false }));
+    return [...mailMessages, ...drafts, ...sent];
+  }
+
+  function mailIsUnread(item) {
+    return Boolean(item.unread && !state.mail.read[item.id]);
+  }
+
+  function mailMatchesFolder(item, folder) {
+    const trashed = Boolean(state.mail.trashed[item.id]);
+    const archived = Boolean(state.mail.archived[item.id]);
+    if (folder === "trash") return trashed;
+    if (trashed) return false;
+    if (folder === "archive") return archived;
+    if (folder === "inbox") return item.folder === "inbox" && !archived;
+    if (folder === "starred") return Boolean(state.mail.starred[item.id]) && !archived;
+    return item.folder === folder && !archived;
+  }
+
+  function filteredMailItems() {
+    const needle = (mailSearch?.value || "").trim().normalize("NFKC").toLowerCase();
+    return currentMailItems().filter((item) => {
+      if (!mailMatchesFolder(item, state.mail.activeFolder)) return false;
+      if (!needle) return true;
+      return [item.from, item.address, item.subject, item.preview, item.body].join(" ").normalize("NFKC").toLowerCase().includes(needle);
+    });
+  }
+
+  function updateMailBadges() {
+    const unread = currentMailItems().filter((item) => mailMatchesFolder(item, "inbox") && mailIsUnread(item)).length;
+    qsa("[data-mail-unread]").forEach((badge) => {
+      badge.textContent = String(Math.min(unread, 99));
+      badge.hidden = unread === 0;
+    });
+  }
+
+  function renderMailReader(item) {
+    if (!mailReader) return;
+    mailReader.replaceChildren();
+    if (!item) {
+      const empty = make("div", "mail-reader-empty");
+      const icon = make("span");
+      icon.append(createSvg("i-mail"));
+      empty.append(icon, make("strong", "", "表示するメールがありません"), make("p", "", "別のメールボックスまたは検索語句を選択してください。"));
+      mailReader.append(empty);
+      return;
+    }
+    const message = make("div", "mail-message");
+    message.append(make("h2", "", item.subject || "（件名なし）"));
+    const head = make("div", "mail-message-head");
+    head.append(make("span", "mail-sender-avatar", item.initials || item.from.slice(0, 1)));
+    const sender = make("span");
+    sender.append(make("strong", "", item.from), make("small", "", `${item.address} から 自分へ`));
+    head.append(sender, make("time", "", item.time || "保存済み"));
+    message.append(head);
+    const body = make("div", "mail-body");
+    String(item.body || "").split(/\n{2,}/).forEach((paragraph) => body.append(make("p", "", paragraph)));
+    if (item.id === "archive-delivery") body.append(make("p", "mail-quote", "配送ログ: 受信時刻 03:18 / 原送信時刻 03:17 / 差出人識別子: 未解決"));
+    message.append(body);
+    const footer = document.createElement("footer");
+    const reply = make("button", "", "返信");
+    reply.type = "button";
+    reply.dataset.mailAction = "reply";
+    const forward = make("button", "", "転送");
+    forward.type = "button";
+    forward.dataset.mailAction = "forward";
+    footer.append(reply, forward);
+    message.append(footer);
+    mailReader.append(message);
+    qsa("[data-mail-action]", mailWindow).forEach((button) => {
+      if (button.dataset.mailAction === "star") {
+        const starred = Boolean(state.mail.starred[item.id]);
+        button.textContent = starred ? "★" : "☆";
+        button.setAttribute("aria-label", starred ? "スターを外す" : "スターを付ける");
+      }
+    });
+  }
+
+  function renderMail() {
+    if (!mailList || !mailWindow) return;
+    const items = filteredMailItems();
+    if (!items.some((item) => item.id === state.mail.activeMailId)) state.mail.activeMailId = items[0]?.id || "";
+    const active = items.find((item) => item.id === state.mail.activeMailId) || null;
+    const listTitle = qs("[data-mail-list-title]");
+    const count = qs("[data-mail-count]");
+    if (listTitle) listTitle.textContent = mailFolderNames[state.mail.activeFolder] || "メール";
+    if (count) count.textContent = items.length ? `${items.length} 件` : "";
+    qsa("[data-mail-folder]", mailWindow).forEach((button) => button.classList.toggle("active", button.dataset.mailFolder === state.mail.activeFolder));
+    mailList.replaceChildren();
+    if (!items.length) {
+      mailList.append(make("p", "mail-list-empty", "このメールボックスに表示できるメールはありません。"));
+    } else {
+      items.forEach((item) => {
+        const button = make("button", "mail-item");
+        button.type = "button";
+        button.classList.toggle("active", item.id === active?.id);
+        button.classList.toggle("unread", mailIsUnread(item));
+        button.append(make("span", "mail-from", item.from), make("time", "mail-time", item.time || "保存済み"), make("span", "mail-subject", item.subject || "（件名なし）"), make("span", "mail-preview", item.preview || item.body || ""));
+        if (state.mail.starred[item.id]) button.append(make("span", "mail-star", "★"));
+        button.addEventListener("click", () => selectMail(item.id));
+        mailList.append(button);
+      });
+    }
+    renderMailReader(active);
+    updateMailBadges();
+  }
+
+  function selectMail(id) {
+    const item = currentMailItems().find((mail) => mail.id === id);
+    if (!item) return;
+    state.mail.activeMailId = id;
+    if (item.unread) state.mail.read[id] = true;
+    persist();
+    mailWindow?.classList.add("mail-selected");
+    renderMail();
+  }
+
+  function openMailCompose(prefill = {}) {
+    if (!mailCompose) return;
+    mailTo.value = prefill.to || "";
+    mailSubject.value = prefill.subject || "";
+    mailBody.value = prefill.body || "";
+    mailCompose.hidden = false;
+    window.setTimeout(() => mailTo?.focus(), 40);
+  }
+
+  function closeMailCompose() {
+    if (mailCompose) mailCompose.hidden = true;
+  }
+
+  function createMailRecord(folder) {
+    const subject = mailSubject?.value.trim() || "（件名なし）";
+    const body = mailBody?.value.trim() || "";
+    const to = mailTo?.value.trim() || "宛先未指定";
+    if (!body && folder === "drafts") {
+      toast("下書きに保存する内容を入力してください。");
+      return null;
+    }
+    return { id: `${folder}-${Date.now()}`, from: folder === "sent" ? "早瀬 真琴" : "早瀬 真琴（下書き）", address: folder === "sent" ? `to: ${to}` : "この端末内の下書き", initials: "早", subject, preview: body.replace(/\s+/g, " ").slice(0, 88) || "本文なし", body: body || "（本文なし）", time: new Intl.DateTimeFormat("ja-JP", { hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date()), folder };
+  }
+
+  qsa("[data-mail-folder]", mailWindow).forEach((button) => button.addEventListener("click", () => {
+    state.mail.activeFolder = button.dataset.mailFolder || "inbox";
+    state.mail.activeMailId = "";
+    mailWindow?.classList.remove("mail-selected");
+    persist();
+    renderMail();
+  }));
+  mailSearch?.addEventListener("input", renderMail);
+  qsa("[data-mail-compose-open]", mailWindow).forEach((button) => button.addEventListener("click", () => openMailCompose()));
+  qs("[data-mail-compose-close]", mailWindow)?.addEventListener("click", closeMailCompose);
+  qs("[data-mail-back]", mailWindow)?.addEventListener("click", () => mailWindow?.classList.remove("mail-selected"));
+  qs("[data-mail-save-draft]", mailWindow)?.addEventListener("click", () => {
+    const record = createMailRecord("drafts");
+    if (!record) return;
+    state.mail.drafts.unshift(record);
+    state.mail.activeFolder = "drafts";
+    state.mail.activeMailId = record.id;
+    persist(true);
+    closeMailCompose();
+    renderMail();
+    toast("下書きをこの端末に保存しました。");
+  });
+  qs("[data-mail-compose-form]", mailWindow)?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const record = createMailRecord("sent");
+    if (!record) return;
+    state.mail.sent.unshift(record);
+    state.mail.activeFolder = "sent";
+    state.mail.activeMailId = record.id;
+    persist(true);
+    closeMailCompose();
+    renderMail();
+    toast("送信済みに保存しました。外部には送信されていません。");
+  });
+  mailWindow?.addEventListener("click", (event) => {
+    const action = event.target.closest("[data-mail-action]")?.dataset.mailAction;
+    if (!action) return;
+    const id = state.mail.activeMailId;
+    const item = currentMailItems().find((mail) => mail.id === id);
+    if (!item) return;
+    if (action === "star") {
+      state.mail.starred[id] = !state.mail.starred[id];
+      if (!state.mail.starred[id]) delete state.mail.starred[id];
+      persist();
+      renderMail();
+    } else if (action === "unread") {
+      delete state.mail.read[id];
+      persist();
+      renderMail();
+      toast("未読に戻しました。");
+    } else if (action === "archive") {
+      state.mail.archived[id] = true;
+      state.mail.activeMailId = "";
+      persist();
+      renderMail();
+      toast("アーカイブしました。");
+    } else if (action === "trash") {
+      state.mail.trashed[id] = true;
+      state.mail.activeMailId = "";
+      persist();
+      renderMail();
+      toast("ごみ箱に移動しました。");
+    } else if (action === "reply" || action === "forward") {
+      const subject = action === "reply" ? `Re: ${item.subject}` : `Fwd: ${item.subject}`;
+      const quote = action === "forward" ? `\n\n---- 転送メッセージ ----\n${item.body}` : "";
+      openMailCompose({ to: action === "reply" ? item.address : "", subject, body: quote });
     }
   });
 
@@ -1203,8 +1466,10 @@
     renderConversationList();
     renderMessages();
     renderCallHistory();
+    renderMail();
     renderNotifications();
     updateUnreadBadges();
+    updateMailBadges();
     updateClock();
     window.setInterval(updateClock, 1000);
 
