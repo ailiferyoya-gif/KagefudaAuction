@@ -311,6 +311,21 @@ svg use[href="#i-start"] {
   background: linear-gradient(145deg, #6677d9, #5e50b9 58%, #8a4eb8);
 }
 
+.puzzle-tile { color: #fff; }
+.recorder-tile { background: linear-gradient(145deg, #5f80e8, #5349b8); }
+.calendar-tile { background: linear-gradient(145deg, #f08b5d, #cf4f63); }
+.photos-tile { background: linear-gradient(145deg, #43b69b, #2982a0); }
+.map-tile { background: linear-gradient(145deg, #55a8d1, #356ec0); }
+.downloads-tile { background: linear-gradient(145deg, #9b6be1, #6551c2); }
+.camera-tile { background: linear-gradient(145deg, #56687f, #27364b); }
+.notes-tile { background: linear-gradient(145deg, #f0c949, #dc8c34); color: #5c3c05; }
+.settings-tile { background: linear-gradient(145deg, #8b9bae, #59697d); }
+
+.window-app-icon.puzzle-tile {
+  border-radius: 6px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.24);
+}
+
 .folder-tile {
   color: #5c3b05;
   background: linear-gradient(160deg, #ffe17a, #e9a529);
@@ -434,6 +449,31 @@ svg use[href="#i-start"] {
   width: min(1240px, 82vw);
   height: min(780px, 82vh);
   background: rgba(247, 249, 253, 0.98);
+}
+
+.tool-app-window {
+  top: 6.5%;
+  left: 13%;
+  width: min(1180px, 78vw);
+  height: min(780px, 82vh);
+  background: #eef3fb;
+}
+
+#calendarWindow { top: 7.5%; left: 14%; }
+#photosWindow { top: 8.5%; left: 15%; }
+#mapWindow { top: 9.5%; left: 16%; }
+#downloadsWindow { top: 7%; left: 17%; }
+#cameraWindow { top: 8%; left: 18%; }
+#notesWindow { top: 9%; left: 19%; }
+#settingsWindow { top: 10%; left: 20%; }
+
+.tool-app-frame {
+  display: block;
+  width: 100%;
+  min-height: 0;
+  flex: 1;
+  border: 0;
+  background: #edf2fa;
 }
 
 .explorer-window {

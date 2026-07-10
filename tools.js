@@ -6,6 +6,8 @@
   const qsa = (selector, root = document) => [...root.querySelectorAll(selector)];
   const content = qs("#toolContent");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const params = new URLSearchParams(window.location.search);
+  const embeddedApp = params.get("embed") === "1" ? params.get("app") : "";
   let toastTimer = 0;
   let recorderTimer = 0;
 
@@ -317,6 +319,9 @@
   }
 
   const toolRegistry={home:renderHome,recorder:renderRecorder,calendar:renderCalendar,photos:renderPhotos,map:renderMap,downloads:renderDownloads,camera:renderCamera,notes:renderNotes,settings:renderSettings};
+  const toolNames={home:"謎解きツール",recorder:"音声レコーダー",calendar:"カレンダー",photos:"写真",map:"地図",downloads:"ダウンロード",camera:"監視カメラ",notes:"付箋",settings:"設定"};
+  const isEmbedded=Boolean(embeddedApp&&toolRegistry[embeddedApp]);
+  if(isEmbedded){document.body.classList.add("embedded");document.title=`${toolNames[embeddedApp]} — KFA-ARCHIVE-07`;}
   qsa("[data-tool]").forEach((node)=>node.addEventListener("click",()=>showTool(node.dataset.tool)));
   document.addEventListener("click",(event)=>{const target=event.target.closest("[data-open-tool]");if(target)showTool(target.dataset.openTool);});
   qs(".brand")?.addEventListener("click", (event) => {
@@ -326,5 +331,6 @@
   });
   qs("[data-tools-reset]")?.addEventListener("click",()=>{if(!window.confirm("保存した付箋、復元状態、設定を初期化しますか？"))return;Object.assign(state,clone(defaults));persist();showTool("home");toast("テンプレート状態を初期化しました。");});
   function updateClock(){const now=new Date();const clock=qs("[data-tools-clock]");if(clock)clock.textContent=new Intl.DateTimeFormat("ja-JP",{hour:"2-digit",minute:"2-digit",hour12:false}).format(now);} 
-  updateClock();window.setInterval(updateClock,1000);showTool(state.active in toolRegistry?state.active:"home");
+  const initialTool=isEmbedded?embeddedApp:(state.active in toolRegistry?state.active:"home");
+  updateClock();window.setInterval(updateClock,1000);showTool(initialTool);
 })();

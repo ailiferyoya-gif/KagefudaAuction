@@ -269,3 +269,16 @@ svg { display: block; width: 20px; height: 20px; fill: none; stroke: currentColo
   .tool-card, .library-card, .tool-nav button, .calendar-day, .download-row { border:1px solid CanvasText; box-shadow:none; }
   .tool-nav button.active, .tool-button.primary { background:Highlight; color:HighlightText; }
 }
+
+/* Desktop app windows use the same renderers without the library chrome. */
+body.embedded { min-height:100dvh; background:#edf2fa; }
+body.embedded .appbar,
+body.embedded .tool-nav { display:none; }
+body.embedded .tool-layout { min-height:100dvh; grid-template-columns:minmax(0,1fr); }
+body.embedded .tool-stage { min-height:100dvh; padding:clamp(16px,2.2vw,30px); }
+body.embedded .tool-shell { width:100%; max-width:none; }
+
+@media (max-width: 760px) {
+  body.embedded .tool-layout { min-height:100dvh; grid-template-columns:minmax(0,1fr); }
+  body.embedded .tool-stage { padding:14px 10px 22px; }
+}

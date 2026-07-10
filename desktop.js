@@ -304,6 +304,10 @@
     }
     const win = document.getElementById(id);
     if (!win) return;
+    const toolFrame = qs("[data-tool-frame]", win);
+    if (toolFrame && !toolFrame.getAttribute("src")) {
+      toolFrame.setAttribute("src", toolFrame.dataset.src || "tools.html");
+    }
     win.hidden = false;
     win.dataset.hasOpened = "true";
     win.classList.remove("is-minimized");
