@@ -306,6 +306,11 @@ svg use[href="#i-start"] {
   stroke-width: 1.8;
 }
 
+.tools-tile {
+  color: #fff;
+  background: linear-gradient(145deg, #6677d9, #5e50b9 58%, #8a4eb8);
+}
+
 .folder-tile {
   color: #5c3b05;
   background: linear-gradient(160deg, #ffe17a, #e9a529);

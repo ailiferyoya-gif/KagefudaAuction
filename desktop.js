@@ -298,6 +298,10 @@
       navigateBrowser("observer.html");
       return;
     }
+    if (id === "toolsDirect") {
+      navigateBrowser("tools.html");
+      return;
+    }
     const win = document.getElementById(id);
     if (!win) return;
     win.hidden = false;
@@ -554,7 +558,8 @@
     const actions = {
       "open-line": () => openWindow("lineWindow"),
       "open-auction": () => navigateBrowser("index.html"),
-      "open-observer": () => navigateBrowser("observer.html")
+      "open-observer": () => navigateBrowser("observer.html"),
+      "close-browser": () => closeWindow(qs("#browserWindow"))
     };
     if (Object.hasOwn(actions, payload.action) && typeof actions[payload.action] === "function") {
       actions[payload.action]();

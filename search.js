@@ -101,6 +101,17 @@
       tag: "会員"
     },
     {
+      id: "tools",
+      source: "KFA Puzzle Applications",
+      mark: "用",
+      path: "kagefuda.local › tools",
+      url: "tools.html",
+      title: "アプリ ライブラリ — 謎解き用の記録ツール",
+      snippet: "音声レコーダー、カレンダー、写真、地図、ダウンロード、監視カメラ、付箋、設定を端末内だけで操作できます。",
+      keywords: "アプリ ライブラリ ツール 音声 レコーダー カレンダー 写真 地図 ダウンロード 監視カメラ 付箋 設定 謎解き",
+      tag: "LOCAL TOOLS"
+    },
+    {
       id: "missing",
       source: "影札 欠番目録",
       mark: "0",
@@ -120,6 +131,7 @@
     "03:17 時計",
     "早瀬 真琴",
     "観測者プロトコル",
+    "アプリ ライブラリ",
     "LOT 0417",
     "返却品 受取人"
   ];
