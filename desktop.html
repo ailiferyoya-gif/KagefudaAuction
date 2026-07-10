@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="ブラウザだけで操作できる架空のWindows風デスクトップ謎解き。">
+  <title>KFA-ARCHIVE-07 | 仮想デスクトップ</title>
+  <link rel="stylesheet" href="desktop.css">
+</head>
+<body>
+  <svg class="svg-defs" aria-hidden="true">
+    <symbol id="i-start" viewBox="0 0 24 24"><path d="M3 4.5 10.8 3v8.1H3V4.5Zm9.1-1.7L21 1.5v9.6h-8.9V2.8ZM3 12.4h7.8V21L3 19.6v-7.2Zm9.1 0H21v10.1l-8.9-1.3v-8.8Z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.6"/><path d="m16 16 4.4 4.4"/></symbol>
+    <symbol id="i-browser" viewBox="0 0 24 24"><path d="M4.4 15.8c1.9 4.2 7 6 11.1 3.9 4.2-2.1 5.8-7.3 3.3-11.3C16.3 4.3 10.8 3.2 7 6.2c-3.2 2.5-4.2 7.2-1.9 10.6 2.1 3.1 6.3 4 9.5 2.1 2.8-1.7 4-5.2 2.8-8.2-1.2-3-4.4-4.7-7.5-3.9-2.8.7-4.7 3.3-4.6 6.2"/></symbol>
+    <symbol id="i-line" viewBox="0 0 24 24"><path d="M21 10.7c0-4.4-4-8-9-8s-9 3.6-9 8c0 3.9 3.2 7.2 7.5 7.9.3.1.7.3.8.7.1.3.1.8.1 1.1l-.2 1.2c-.1.4-.3 1.4 1.2.8 1.4-.6 7.5-4.4 8.4-7.5.2-.6.3-1.3.3-2.2Z"/><path d="M7 9v4M9.2 13V9l2.6 4V9M14 9v4h2.4M17.4 9h-2v4h2"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M2.8 6.6h7l1.7 2h9.7v10.7H2.8V6.6Z"/><path d="M2.8 8.6h18.4"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M5 7h14l-1 14H6L5 7Zm-2-3h18M9 4V2h6v2M9 10v7M15 10v7"/></symbol>
+    <symbol id="i-note" viewBox="0 0 24 24"><path d="M5 2h11l3 3v17H5V2Z"/><path d="M8 9h8M8 13h8M8 17h5M16 2v4h4"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M7.1 3.5 10 7.8 7.9 10c1.4 2.8 3.4 4.8 6.1 6.1l2.2-2.1 4.3 2.9-1.4 3.2c-.4.9-1.4 1.4-2.4 1.2C9.4 19.8 4.2 14.6 2.7 7.3c-.2-1 .3-2 1.2-2.4l3.2-1.4Z"/></symbol>
+    <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M3 9.5c5-4.2 13-4.2 18 0M6.5 13c3.1-2.5 7.9-2.5 11 0M10 16.4c1.2-.9 2.8-.9 4 0M12 20h.01"/></symbol>
+    <symbol id="i-volume" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4V9Zm12 1a3 3 0 0 1 0 4M18 7a7 7 0 0 1 0 10"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 6v5h-5M4 18v-5h5"/><path d="M18.8 9A8 8 0 0 0 5.2 6M5.2 15A8 8 0 0 0 18.8 18"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="m3 3 18 9-18 9 3-9-3-9Zm3 9h15"/></symbol>
+    <symbol id="i-call-end" viewBox="0 0 24 24"><path d="M4 16c4.8-4.4 11.2-4.4 16 0l-2.8 3-3.2-2v-2.2c-1.3-.4-2.7-.4-4 0V17l-3.2 2L4 16Z"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="8" y="3" width="8" height="13" rx="4"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/></symbol>
+    <symbol id="i-max" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14"/></symbol>
+  </svg>
+
+  <div class="boot-screen" id="bootScreen" aria-live="polite">
+    <div class="boot-mark"><svg><use href="#i-start"/></svg></div>
+    <div class="boot-spinner" aria-hidden="true"></div>
+    <p>夜間端末を復元しています</p>
+  </div>
+
+  <main class="desktop" id="desktop" aria-label="KFA仮想デスクトップ">
+    <div class="desktop-icons" aria-label="デスクトップアイコン">
+      <button class="desktop-icon" data-open="browserWindow"><span class="app-tile browser-tile"><svg><use href="#i-browser"/></svg></span><span>影札オークション</span></button>
+      <button class="desktop-icon" data-open="lineWindow"><span class="app-tile line-tile"><svg><use href="#i-line"/></svg></span><span>LINE</span><b class="desktop-badge" data-line-unread>2</b></button>
+      <button class="desktop-icon" data-open="explorerWindow"><span class="app-tile folder-tile"><svg><use href="#i-folder"/></svg></span><span>夜間引継ぎ</span></button>
+      <button class="desktop-icon" data-open="recycleWindow"><span class="app-tile trash-tile"><svg><use href="#i-trash"/></svg></span><span>ごみ箱</span></button>
+      <button class="desktop-icon" data-open="observerDirect"><span class="app-tile observer-tile">13</span><span>観測記録</span></button>
+    </div>
+
+    <section class="os-window browser-window" id="browserWindow" data-app="browser" aria-labelledby="browserTitle" hidden>
+      <header class="window-titlebar" data-drag-handle>
+        <div class="window-app-icon browser-tile"><svg><use href="#i-browser"/></svg></div><span id="browserTitle">Microsoft Edge — 影札オークション</span>
+        <div class="window-controls"><button data-minimize aria-label="最小化">─</button><button data-maximize aria-label="最大化"><svg><use href="#i-max"/></svg></button><button class="close" data-close aria-label="閉じる">×</button></div>
+      </header>
+      <div class="browser-toolbar"><button data-browser-back aria-label="戻る"><svg><use href="#i-back"/></svg></button><button data-browser-forward aria-label="進む"><svg><use href="#i-chevron"/></svg></button><button data-browser-reload aria-label="再読み込み"><svg><use href="#i-refresh"/></svg></button><div class="browser-address"><span>🔒</span><input value="kagefuda.local/index.html" aria-label="アドレス" readonly></div><button data-browser-home aria-label="ホーム">⌂</button></div>
+      <iframe class="browser-frame" id="browserFrame" src="index.html" title="影札オークション"></iframe>
+    </section>
+
+    <section class="os-window line-window" id="lineWindow" data-app="line" aria-labelledby="lineTitle" hidden>
+      <header class="window-titlebar line-titlebar" data-drag-handle><div class="window-app-icon line-tile"><svg><use href="#i-line"/></svg></div><span id="lineTitle">LINE</span><small>非公式・架空デモ / 外部送信なし</small><div class="window-controls"><button data-minimize aria-label="最小化">─</button><button data-maximize aria-label="最大化"><svg><use href="#i-max"/></svg></button><button class="close" data-close aria-label="閉じる">×</button></div></header>
+      <div class="line-shell">
+        <nav class="line-rail" aria-label="LINEメニュー"><button class="line-profile" title="プロフィール">早</button><button class="active" data-line-view="chats" aria-label="トーク"><svg><use href="#i-line"/></svg><b data-line-unread>2</b></button><button data-line-view="calls" aria-label="通話"><svg><use href="#i-phone"/></svg></button><button data-line-view="friends" aria-label="友だち">♙</button><span></span><button data-line-settings aria-label="設定">⚙</button></nav>
+        <aside class="conversation-pane" data-conversation-pane><div class="line-pane-head"><strong>トーク</strong><button aria-label="新規トーク">＋</button></div><label class="line-search"><svg><use href="#i-search"/></svg><input placeholder="トークを検索" aria-label="トークを検索"></label><div class="conversation-list" data-conversation-list></div></aside>
+        <section class="chat-pane" data-chat-pane><header class="chat-head"><div><strong data-chat-name>早瀬 真琴</strong><small data-chat-status>最終アクセス 03:17</small></div><button data-open-dialer aria-label="キーパッドで発信"><svg><use href="#i-phone"/></svg></button></header><div class="message-list" data-message-list aria-live="polite"></div><div class="typing" data-typing hidden>入力中<span>•••</span></div><form class="message-compose" data-message-form><button type="button" aria-label="添付">＋</button><input data-message-input placeholder="メッセージを入力" aria-label="メッセージ"><button class="send" aria-label="送信"><svg><use href="#i-send"/></svg></button></form></section>
+        <section class="calls-pane" data-calls-pane hidden><div class="call-page-head"><button data-back-chats aria-label="トークへ戻る"><svg><use href="#i-back"/></svg></button><div><strong>通話</strong><small>この端末内の架空回線です</small></div></div><div class="dialer"><div class="dial-display"><span>アーカイブ内線</span><input data-dial-number inputmode="numeric" aria-label="電話番号" placeholder="番号を入力" maxlength="17" readonly><button data-dial-delete aria-label="一文字削除">⌫</button></div><div class="dial-pad" data-dial-pad></div><button class="dial-call" data-dial-call><svg><use href="#i-phone"/></svg><span>発信</span></button><p>実際の電話網・緊急通報には接続しません。マイクも使用しません。</p><div class="call-history" data-call-history><strong>最近の通話</strong><div><span>発信元不明</span><time>昨日 03:17</time></div></div></div></section>
+      </div>
+      <div class="call-overlay" data-call-overlay hidden aria-live="assertive"><div class="call-avatar">?</div><strong data-call-name>接続中</strong><span data-call-number></span><b data-call-status>発信しています…</b><time data-call-timer>00:00</time><div class="call-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><div class="call-actions"><button data-toggle-mute><svg><use href="#i-mic"/></svg><span>ミュート</span></button><button class="hangup" data-hangup><svg><use href="#i-call-end"/></svg><span>終了</span></button></div><button class="transcript-btn" data-transcript-toggle>文字起こしを表示</button><div class="call-transcript" data-call-transcript hidden></div></div>
+    </section>
+
+    <section class="os-window explorer-window" id="explorerWindow" data-app="explorer" aria-labelledby="explorerTitle" hidden>
+      <header class="window-titlebar" data-drag-handle><div class="window-app-icon folder-tile"><svg><use href="#i-folder"/></svg></div><span id="explorerTitle">エクスプローラー — 夜間引継ぎ</span><div class="window-controls"><button data-minimize aria-label="最小化">─</button><button data-maximize aria-label="最大化"><svg><use href="#i-max"/></svg></button><button class="close" data-close aria-label="閉じる">×</button></div></header>
+      <div class="explorer-toolbar"><button><svg><use href="#i-back"/></svg></button><div>PC › ドキュメント › 夜間引継ぎ</div><label><svg><use href="#i-search"/></svg><input placeholder="夜間引継ぎを検索"></label></div><div class="explorer-body"><nav class="explorer-sidebar"><button>⌂ ホーム</button><button>▤ ギャラリー</button><strong>ピン留め</strong><button>▱ デスクトップ</button><button class="selected">▱ ドキュメント</button><button>▱ ダウンロード</button><strong>このPC</strong><button>▰ KFA_ARCHIVE (C:)</button></nav><section class="file-view"><header><strong>夜間引継ぎ</strong><span>3個の項目</span></header><div class="file-grid" data-file-grid></div></section></div>
+    </section>
+
+    <section class="os-window recycle-window" id="recycleWindow" data-app="recycle" aria-labelledby="recycleTitle" hidden>
+      <header class="window-titlebar" data-drag-handle><div class="window-app-icon trash-tile"><svg><use href="#i-trash"/></svg></div><span id="recycleTitle">ごみ箱</span><div class="window-controls"><button data-minimize aria-label="最小化">─</button><button data-maximize aria-label="最大化"><svg><use href="#i-max"/></svg></button><button class="close" data-close aria-label="閉じる">×</button></div></header><div class="recycle-content"><div class="recycle-notice">削除済みの項目はまだ完全には消去されていません。</div><button class="deleted-file" data-open-file="deleted-call"><svg><use href="#i-note"/></svg><span><strong>削除済み通話記録.log</strong><small>元の場所: C:\KFA\LINE\cache</small></span></button></div>
+    </section>
+
+    <section class="os-window notepad-window" id="notepadWindow" data-app="notepad" aria-labelledby="notepadTitle" hidden>
+      <header class="window-titlebar" data-drag-handle><div class="window-app-icon note-tile"><svg><use href="#i-note"/></svg></div><span id="notepadTitle" data-notepad-title>メモ帳</span><div class="window-controls"><button data-minimize aria-label="最小化">─</button><button data-maximize aria-label="最大化"><svg><use href="#i-max"/></svg></button><button class="close" data-close aria-label="閉じる">×</button></div></header><div class="notepad-menu">ファイル　編集　表示</div><textarea data-notepad-content spellcheck="false" aria-label="文書内容"></textarea><footer><span>Windows (CRLF)</span><span>UTF-8</span></footer>
+    </section>
+
+    <div class="start-menu" id="startMenu" hidden><header><strong>ピン留め済み</strong><button>すべて　›</button></header><div class="start-apps"><button data-open="browserWindow"><span class="app-tile browser-tile"><svg><use href="#i-browser"/></svg></span>Edge</button><button data-open="lineWindow"><span class="app-tile line-tile"><svg><use href="#i-line"/></svg></span>LINE</button><button data-open="explorerWindow"><span class="app-tile folder-tile"><svg><use href="#i-folder"/></svg></span>エクスプローラー</button><button data-open="observerDirect"><span class="app-tile observer-tile">13</span>観測記録</button><button data-open="recycleWindow"><span class="app-tile trash-tile"><svg><use href="#i-trash"/></svg></span>ごみ箱</button></div><section><strong>おすすめ</strong><button class="recommendation" data-open-file="handoff"><span class="app-tile note-tile"><svg><use href="#i-note"/></svg></span><span>00_夜間引継ぎ_未送信.txt<small>最近追加された項目</small></span></button></section><footer><span class="user-avatar">早</span><b>早瀬 真琴</b><button data-power aria-label="電源">⏻</button></footer></div>
+
+    <aside class="notification-panel" id="notificationPanel" hidden><header><strong>通知</strong><button data-clear-notifications>すべてクリア</button></header><div data-notifications></div><section class="calendar-card"><div data-calendar-date></div><strong data-calendar-day></strong></section></aside>
+    <div class="desktop-toast" data-desktop-toast role="status" aria-live="polite"></div>
+  </main>
+
+  <footer class="taskbar"><div class="taskbar-center"><button class="task-button" id="startButton" aria-label="スタート"><svg><use href="#i-start"/></svg></button><button class="task-button" data-open="browserWindow" data-task="browserWindow" aria-label="Edge"><svg><use href="#i-browser"/></svg></button><button class="task-button line-task" data-open="lineWindow" data-task="lineWindow" aria-label="LINE"><svg><use href="#i-line"/></svg><b data-line-unread>2</b></button><button class="task-button" data-open="explorerWindow" data-task="explorerWindow" aria-label="エクスプローラー"><svg><use href="#i-folder"/></svg></button></div><button class="system-tray" id="trayButton" aria-label="通知とカレンダー"><svg><use href="#i-wifi"/></svg><svg><use href="#i-volume"/></svg><span><b data-task-time>03:16</b><small data-task-date>2026/07/10</small></span></button></footer>
+
+  <audio id="archiveVoice" preload="auto" src="assets/call-031711310417.wav"></audio>
+  <script src="desktop.js"></script>
+</body>
+</html>

@@ -13,3 +13,14 @@ document.documentElement.classList.add('js-loaded');document.body.insertAdjacent
 const mobileNav=`<nav class="mobile-dock" aria-label="モバイルナビ"><a href="index.html" class="${page==='home'?'active':''}">${icons.home}<span>ホーム</span></a><a href="auctions.html" class="${page==='auctions'?'active':''}">${icons.grid}<span>競売</span></a><a href="archive.html" class="${page==='archive'?'active':''}">${icons.book}<span>来歴</span></a><button type="button" data-mobile-more>${icons.menu}<span>その他</span></button></nav><div class="mobile-sheet" data-mobile-sheet><div class="mobile-sheet-panel"><div class="kicker">Kagefuda directory</div><div class="mobile-sheet-links"><a href="private-sale.html">Private Sale</a><a href="about.html">影札について</a><a href="account.html">会員デスク</a></div><div class="mobile-sheet-meta">SESSION KFA-07-10-N<br>VIEWER 0130</div></div></div>`;document.body.insertAdjacentHTML('beforeend',mobileNav);const sheet=document.querySelector('[data-mobile-sheet]');document.querySelector('[data-mobile-more]')?.addEventListener('click',()=>sheet.classList.toggle('open'));sheet?.addEventListener('click',e=>{if(e.target===sheet)sheet.classList.remove('open')});
 const catalogTop=document.querySelector('.catalog-top');if(catalogTop){catalogTop.insertAdjacentHTML('beforeend',`<div class="catalog-view" aria-label="表示形式"><button class="view-btn active" data-view="grid" aria-label="グリッド表示">${icons.grid}</button><button class="view-btn" data-view="list" aria-label="リスト表示">${icons.list}</button></div>`)}document.querySelectorAll('[data-view]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('[data-view]').forEach(x=>x.classList.remove('active'));btn.classList.add('active');document.querySelector('.catalog-grid')?.classList.toggle('list-view',btn.dataset.view==='list')}));
 document.querySelectorAll('[data-hero-search]').forEach(form=>form.addEventListener('submit',e=>{e.preventDefault();const q=form.querySelector('input').value.trim();location.href='auctions.html'+(q?`?q=${encodeURIComponent(q)}`:'')}));if(search){const q=new URLSearchParams(location.search).get('q');if(q){search.value=q;filterCatalog()}}
+
+// Standalone pages can return to the local archive terminal. Inside the
+// simulated browser the desktop chrome already provides this affordance.
+if(window.top===window.self&&!document.body.classList.contains('observer-page')){
+  const terminalLink=document.createElement('a');
+  terminalLink.className='desktop-return';
+  terminalLink.href='desktop.html';
+  terminalLink.setAttribute('aria-label','仮想デスクトップへ戻る');
+  terminalLink.innerHTML='<span aria-hidden="true">KFA</span><b>仮想端末を開く</b><small>ARCHIVE-07</small>';
+  document.body.appendChild(terminalLink);
+}

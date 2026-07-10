@@ -1,17 +1,29 @@
 # 影札オークション 引継ぎ
 
+## 仮想デスクトップ（2026-07-10追加）
+
+- 入口: `desktop.html`。Windows 11風の全画面端末から既存サイト、LINE、夜間引継ぎ、ごみ箱、観測記録へ移動できる。
+- 実装: `desktop.css` / `desktop.js`。ウィンドウの前面化・ドラッグ・最小化・最大化、スタートメニュー、通知、時計、モバイル全画面表示を実装。
+- LINE: 複数トーク、キーワード応答、ヒント段階解放、架空アーカイブ内線キーパッド、通話履歴を実装。外部通信とマイク取得は行わない。
+- 通話: 特殊な12桁内線で呼出音が4回鳴った後、`assets/call-031711310417.wav` を再生。正解後はLINE・通知・時計が連動する。
+- 生成素材: `assets/desktop-wallpaper.png`（青い抽象リボンの端末壁紙）をChatGPTで生成。スプライトシート不使用。
+- 端末内ファイル: 夜間引継ぎ、音声検査要約、運用メモ、ごみ箱の削除済み通話記録をメモ帳で閲覧できる。
+- 保存: `kagefuda-desktop-v1`（端末状態）と既存の観測者プロトコル用キーを同一オリジンの `localStorage` で管理。
+- 安全境界: 110・119を含む実電話網には接続しない。全演出はHTML/CSS/JavaScriptと同梱音声だけで完結。
+
 - 生成済み画像: `assets/lot-0417-recorder.png`（架空の水損カセットレコーダー）
 - 実装: UI/UX Pro MaxのSwiss Modernism 2.0、Editorial Grid、Bento Grid指針で再調整。`private-sale.html`を追加した7ページ構成。
 - UI強化: ホーム検索を主CTA化、マーケット指標レール、非対称Private Sale、カタログ表示切替、モバイル4項目ドックとボトムシート、短いページ遷移を追加。
 - 共通基盤: `styles.css` と `app.js`。検索モーダル、カタログ絞り込み、ローカル保存ウォッチ、カウントダウン、入札デモ、スクロール表示を実装。
 - 画像: 既存3点に加え、`hero-vault.png`、`lot-0711-film.png`、`lot-0731-bell.png`、`lot-0804-box.png` をChatGPTで生成して使用。スプライトシート不使用。
-- 謎解きの種: 「四番目のベル」「11月31日」「00:17:26」「03:17:42」。現時点では解答を決めていない。
-- 次にやること: 必要ならLOT 0529以降の個別詳細ページと、謎の最終解答フローを追加する。
+- 謎解きの本線: 「三つの記録が止まった時刻」「存在しない日付」「第七码頭の録音機」を4桁ずつ連結し、架空内線へ発信する。
+- 次にやること: 必要ならLOT 0529以降の個別詳細ページと、LOT 0000受諾後にデスクトップをさらに変化させる第2章を追加する。
 
 ## 公開先
 
 - GitHub: https://github.com/ailiferyoya-gif/KagefudaAuction
 - GitHub Pages: https://ailiferyoya-gif.github.io/KagefudaAuction/
+- 仮想デスクトップ: https://ailiferyoya-gif.github.io/KagefudaAuction/desktop.html
 - Pages設定: `main` ブランチ / `/ (root)` / `.nojekyll`
 
 ## 観測者プロトコル
